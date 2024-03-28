@@ -1,22 +1,22 @@
 from typing import Union
 
 from tz.client.api.base import BaseAPI
-from tz.client.api.schemas import AliasResponse
+from tz.client.api.generated_schema import NodeAliasPagination
 
 
-class AliasAPI(BaseAPI):
+class NodeAliasAPI(BaseAPI):
     def get(
         self,
-        alias: str,
+        slug: str,
         threshold: Union[float, None] = None,
         node_type: Union[str, None] = None,
         sector: Union[str, None] = None,
         limit: Union[int, None] = None,
         page: Union[int, None] = None,
         includes: Union[str, None] = None,
-    ) -> AliasResponse:
+    ) -> NodeAliasPagination:
         params = dict(
-            alias=alias,
+            slug=slug,
             threshold=threshold,
             node_type=node_type,
             sector=sector,
@@ -25,7 +25,7 @@ class AliasAPI(BaseAPI):
             includes=includes,
         )
 
-        resp = self.client.get("/aliases", params=params)
+        resp = self.client.get("node-aliases", params=params)
         resp.raise_for_status()
 
-        return AliasResponse(**resp.json())
+        return NodeAliasPagination(**resp.json())
